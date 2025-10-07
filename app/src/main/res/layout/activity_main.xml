@@ -8,50 +8,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <include
         android:id="@+id/headerBanner"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:background="#1E88E5"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
+        layout="@layout/header_banner"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent" />
 
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="85dp"
-            android:layout_height="76dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="308dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logo1" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="226dp"
-            android:layout_marginTop="16dp"
-            android:text="ALL IN CPE"
-            android:textColor="@android:color/white"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="162dp"
-            android:layout_marginTop="10dp"
-            android:text="computer engineering"
-            android:textColor="@android:color/white"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/imageView"
