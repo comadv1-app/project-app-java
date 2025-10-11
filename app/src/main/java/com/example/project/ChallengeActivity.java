@@ -94,11 +94,13 @@ public class ChallengeActivity extends AppCompatActivity {
         ui.setMainText("ฝึก");
         ui.setAltText("จับเวลา");
         ui.onStart(() ->
-                Toast.makeText(this, "เริ่มโหมดฝึก (Code solving)", Toast.LENGTH_SHORT).show()
-        );
-        ui.onAlt(() ->
-                Toast.makeText(this, "เริ่มโหมดจับเวลา (Code solving)", Toast.LENGTH_SHORT).show()
-        );
+        {
+            Intent intent = new Intent(this, CodePracticeActivity.class);
+            startActivity(intent);
+        });
+        ui.onAlt(() -> {
+            startActivity(new Intent(this, CodeTimedActivity.class));
+        });
     }
 
     private void setupBinaryCard(View card) {
