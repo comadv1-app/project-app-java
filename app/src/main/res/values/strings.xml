@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">project</string>
+
+    <string-array name="levels_time">
+        <item>วีคเริ่ม</item>
+        <item>กลาง</item>
+        <item>ท้าทาย</item>
+    </string-array>
+
+    <string-array name="levels_code">
+        <item>ฝึก</item>
+        <item>จับเวลา</item>
+    </string-array>
+
+    <string-array name="levels_binary">
+        <item>วีคเริ่ม</item>
+        <item>กลาง</item>
+    </string-array>
 </resources>

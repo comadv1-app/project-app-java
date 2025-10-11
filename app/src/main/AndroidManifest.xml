@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Project"
         tools:targetApi="31">
         <activity
+            android:name=".TimeGameActivity"
+            android:exported="false" />
+        <activity
             android:name=".OthersActivity"
             android:exported="false" />
         <activity
