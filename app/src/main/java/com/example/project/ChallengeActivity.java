@@ -115,9 +115,9 @@ public class ChallengeActivity extends AppCompatActivity {
         );
 
         ui.setAltButtonVisible(false);
-        ui.onStart(() ->
-                Toast.makeText(this, "เริ่ม Binary", Toast.LENGTH_SHORT).show()
-        );
+        ui.onStart(() -> {
+            startActivity(new Intent(this, BinaryGameActivity.class));
+        });
     }
 
     static class UiCard {
