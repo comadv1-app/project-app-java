@@ -54,8 +54,8 @@ public class ContentActivity extends AppCompatActivity {
         addItem(secElec, "Advanced Software Engineering");
         addItem(secElec, "Cybersecurity");
 
-        // ----- Bottom Navigation (ต้องอยู่ "ใน" onCreate) -----
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
+        bottomNav.setSelectedItemId(R.id.content);
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
 

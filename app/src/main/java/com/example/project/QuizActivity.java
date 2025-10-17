@@ -252,12 +252,11 @@ public class QuizActivity extends AppCompatActivity {
 
     private void setupBottomNavigation() {
         BottomNavigationView bottom = findViewById(R.id.bottomNavigationView);
-        bottom.setSelectedItemId(R.id.game);
         bottom.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.home)   { startActivity(new Intent(this, MainActivity.class));   return true; }
             if (id == R.id.content){ startActivity(new Intent(this, ContentActivity.class)); return true; }
-            if (id == R.id.game)   { return true; }
+            if (id == R.id.game)   { startActivity(new Intent(this, ChallengeActivity.class)); return true; }
             if (id == R.id.others) { startActivity(new Intent(this, OthersActivity.class)); return true; }
             return false;
         });
