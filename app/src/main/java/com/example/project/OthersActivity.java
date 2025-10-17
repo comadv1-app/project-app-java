@@ -49,6 +49,28 @@ public class OthersActivity extends AppCompatActivity {
             return insets;
         });
 
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
+        bottomNav.setSelectedItemId(R.id.others);
+        bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.others) return true;
+
+            if (id == R.id.home) {
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                return true;
+            } else if (id == R.id.content) {
+                startActivity(new Intent(this, ContentActivity.class));
+                finish();
+                return true;
+            } else if (id == R.id.game) {
+                startActivity(new Intent(this, ChallengeActivity.class));
+                finish();
+                return true;
+            }
+            return false;
+        });
+
         bindViews();
         buildData();
         setupDropdown();
@@ -68,7 +90,6 @@ public class OthersActivity extends AppCompatActivity {
         btnMore.setOnClickListener(v -> {
         });
     }
-
 
     private void buildData() {
         domains.clear();
