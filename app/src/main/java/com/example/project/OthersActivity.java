@@ -53,7 +53,6 @@ public class OthersActivity extends AppCompatActivity {
         buildData();
         setupDropdown();
         setupList();
-        setupBottomNav();
     }
 
     private void bindViews() {
@@ -67,32 +66,9 @@ public class OthersActivity extends AppCompatActivity {
         btnMore = findViewById(R.id.btnMore);
 
         btnMore.setOnClickListener(v -> {
-            // ตอนนี้ทำเป็นตัวอย่าง: กลับไปหน้า Content หรือเปิดลิงก์ก็ได้
-            // คุณจะเปลี่ยนเป็นเปิดหน้า detail จริงในอนาคต
-            // startActivity(new Intent(this, SomeDetailActivity.class));
         });
     }
 
-    private void setupBottomNav() {
-        BottomNavigationView nav = findViewById(R.id.bottomNavigationView);
-        nav.setSelectedItemId(R.id.others);
-        nav.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.home) {
-                startActivity(new Intent(this, MainActivity.class));
-                overridePendingTransition(0,0); finish(); return true;
-            } else if (id == R.id.content) {
-                startActivity(new Intent(this, ContentActivity.class));
-                overridePendingTransition(0,0); finish(); return true;
-            } else if (id == R.id.game) {
-                startActivity(new Intent(this, ChallengeActivity.class));
-                overridePendingTransition(0,0); finish(); return true;
-            } else if (id == R.id.others) {
-                return true;
-            }
-            return false;
-        });
-    }
 
     private void buildData() {
         domains.clear();
