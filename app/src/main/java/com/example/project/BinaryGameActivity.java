@@ -23,7 +23,6 @@ import java.util.Random;
 
 public class BinaryGameActivity extends AppCompatActivity {
 
-
     private static final int TOTAL_QUESTIONS = 20;
     private static final int TIME_PER_QUESTION_SEC = 60;
 
@@ -41,6 +40,7 @@ public class BinaryGameActivity extends AppCompatActivity {
     private CountDownTimer timer;
     private long gameStartMs = 0L;
     private long gameEndMs = 0L;
+    private boolean advancing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +83,7 @@ public class BinaryGameActivity extends AppCompatActivity {
         index = 0;
         gameStartMs = System.currentTimeMillis();
         gameEndMs = 0L;
+        advancing = false;
 
         cardSummary.setVisibility(View.GONE);
         cardPlay.setVisibility(View.VISIBLE);
@@ -90,6 +91,8 @@ public class BinaryGameActivity extends AppCompatActivity {
     }
 
     private void showQuestion() {
+        advancing = false;
+
         if (index >= questions.size()) {
             finishGame();
             return;
@@ -101,21 +104,32 @@ public class BinaryGameActivity extends AppCompatActivity {
         tvScore.setText(String.format(Locale.getDefault(), "คะแนน: %d", score));
         tvQuestion.setText(q.renderPrompt());
 
+        etAnswer.setError(null);
         etAnswer.setText("");
         etAnswer.requestFocus();
 
+        btnSubmit.setEnabled(true);
         startTimer(TIME_PER_QUESTION_SEC);
     }
 
     private void onSubmit() {
-        if (index >= questions.size()) return;
+        if (index >= questions.size() || advancing) return;
+        advancing = true;
+        btnSubmit.setEnabled(false);
         stopTimer();
+
         Bq q = questions.get(index);
+        String raw = etAnswer.getText().toString().trim();
+        String ansNormalized = normalizeAnswer(raw, q.toBase);
 
-        String ans = etAnswer.getText().toString().trim();
-        boolean correct = q.check(ans);
-
-        if (correct) score++;
+        boolean correct = q.check(ansNormalized);
+        if (correct) {
+            score++;
+            etAnswer.setError(null);
+        } else {
+            String correctStr = toBaseString(q.value10, q.toBase);
+            etAnswer.setError("ยังไม่ถูกนะครับ — คำตอบที่ถูก: " + correctStr);
+        }
 
         index++;
         showQuestion();
@@ -131,6 +145,9 @@ public class BinaryGameActivity extends AppCompatActivity {
                 tvTime.setText(String.format(Locale.getDefault(), "เวลา: %ds", s));
             }
             @Override public void onFinish() {
+                if (advancing) return;
+                advancing = true;
+
                 tvTime.setText("เวลา: 0s");
                 index++;
                 showQuestion();
@@ -172,7 +189,7 @@ public class BinaryGameActivity extends AppCompatActivity {
         for (int i = 0; i < TOTAL_QUESTIONS; i++) {
             int[] p = pairs[r.nextInt(pairs.length)];
             int from = p[0], to = p[1];
-            int value = r.nextInt(256) + 1; // 1..256
+            int value = r.nextInt(256) + 1;
 
             String src = toBaseString(value, from);
             questions.add(new Bq(src, from, to));
@@ -183,6 +200,17 @@ public class BinaryGameActivity extends AppCompatActivity {
         String s = Integer.toString(value, base);
         if (base == 16) s = s.toUpperCase(Locale.ROOT);
         return s;
+    }
+
+    private static String normalizeAnswer(String raw, int base) {
+        if (raw == null) return "";
+        String s = raw.replace(" ", "").trim();
+        if (base == 2 && (s.startsWith("0b") || s.startsWith("0B"))) {
+            s = s.substring(2);
+        } else if (base == 16 && (s.startsWith("0x") || s.startsWith("0X"))) {
+            s = s.substring(2);
+        }
+        return (base == 16) ? s.toUpperCase(Locale.ROOT) : s;
     }
 
     static class Bq {
@@ -204,17 +232,20 @@ public class BinaryGameActivity extends AppCompatActivity {
                     src, fromBase, toBase);
         }
 
-        boolean check(String user) {
-            if (TextUtils.isEmpty(user)) return false;
+        boolean check(String userNormalized) {
+            if (TextUtils.isEmpty(userNormalized)) return false;
             try {
-                int userVal = Integer.parseInt(user.replace(" ", "")
-                                .toUpperCase(Locale.ROOT),
-                        toBase);
+                int userVal = Integer.parseInt(userNormalized, toBase);
                 return userVal == value10;
             } catch (Exception e) {
                 return false;
             }
         }
+    }
+
+    @Override protected void onPause() {
+        stopTimer();
+        super.onPause();
     }
 
     @Override protected void onDestroy() {
